@@ -1,8 +1,8 @@
 
-################################################################################
+###############################################################################
 # example fibonacci number code;
 # you do not have to modify this code in any way
-################################################################################
+###############################################################################
 
 
 def fibs(n):
@@ -46,10 +46,10 @@ def fib(n):
     return f2
 
 
-################################################################################
+###############################################################################
 # fibonacci number code using generators;
 # you will need to implement the functions below
-################################################################################
+###############################################################################
 
 
 class Fib:
@@ -60,16 +60,59 @@ class Fib:
     >>> list(Fib(5))
     [1, 1, 2, 3, 5]
     '''
+    def __init__(self, n=None):
+        self.n = n
+
+    def __repr__(self):
+        if self.n is None:
+            return 'Fib()'
+        else:
+            return f'Fib({self.n})'
+
+    def __iter__(self):
+        return FibIter(self.n)
 
 
 class FibIter:
     '''
     This is the iterator helper class for the Fib class.
     '''
+    def __init__(self, n):
+        self.n = n
+        self.i = 0
+        self.a = 1
+        self.b = 1
+
+    def __next__(self):
+        if self.n:
+            if self.i >= self.n:
+                raise StopIteration
+            else:
+                self.i += 1
+                c = self.a
+                self.a, self.b = self.b, self.a + self.b
+                return c
+        else:
+            if self.a == 0:
+                self.a += 1
+                return 1
+            else:
+                c = self.a
+                self.a, self.b = self.b, self.a + self.b
+                return c
 
 
 def fib_yield(n=None):
     '''
-    This function returns a generator that computes the first n fibonacci numbers.
+    This function returns a generator that computes the first n fibonacci nums.
     If n is None, then the generator is infinite.
     '''
+    a = 0
+    b = 1
+    if n is not None:
+        if n <= 0:
+            yield a
+        for i in range(1, n + 1):
+            c = a + b
+            a, b = b, c
+            yield a
